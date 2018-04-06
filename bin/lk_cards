@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 require 'lingo_kids'
-puts LingoKids.hi(ARGV[0])
+puts LingoKids.run(ARGV[0])
