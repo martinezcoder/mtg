@@ -1,8 +1,6 @@
 require 'rspec'
 require 'lingo_kids'
+require 'pry'
 
-Rspec.configure do |config|
-  config.expect_with do |c|
-    c.syntax = :expect
-  end
+RSpec.configure do |config|
 end

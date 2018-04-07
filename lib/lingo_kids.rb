@@ -3,7 +3,7 @@ class LingoKids
     client = ApiClient.new
     set = Set.new
 
-    client.cards.each do |c|
+    client.get[:body]["cards"].each do |c|
       set.add(c["set"], c)
     end
 
@@ -11,5 +11,6 @@ class LingoKids
   end
 end
 
+require 'lingo_kids/retryable'
 require 'lingo_kids/set'
 require 'lingo_kids/api_client'

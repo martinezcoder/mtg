@@ -1,13 +1,20 @@
-require 'lingo_kids'
+require 'spec_helper'
 
 describe LingoKids do
   subject { described_class }
 
   before do
-    allow_any_instance_of(LingoKids::ApiClient).to receive(:cards).and_return(cards)
+    allow_any_instance_of(LingoKids::ApiClient).to receive(:get).and_return(response)
   end
 
-  context "api response is an empty list of cards" do
+  let(:response) do
+    {
+      headers: {},
+      body: { "cards" => cards }
+    }
+  end
+
+  context "api response returns an empty list of cards" do
     let(:cards) { [] }
 
     it "returns an empty hash" do
@@ -15,7 +22,7 @@ describe LingoKids do
     end
   end
 
-  context "api response is a present list of cards" do
+  context "api response returns a list of present cards" do
     let(:cards) do
       [
         { "set" => "khans" },

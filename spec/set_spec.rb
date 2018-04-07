@@ -1,4 +1,3 @@
-require 'lingo_kids'
 require 'lingo_kids/set'
 
 describe LingoKids::Set do
