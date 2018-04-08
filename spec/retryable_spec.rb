@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'lingo_kids/retryable'
 
 class RetryableTest
   include LingoKids::Retryable

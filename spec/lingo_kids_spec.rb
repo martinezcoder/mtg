@@ -4,18 +4,12 @@ describe LingoKids do
   subject { described_class }
 
   before do
-    allow_any_instance_of(LingoKids::ApiClient).to receive(:get).and_return(response)
-  end
-
-  let(:response) do
-    {
-      headers: {},
-      body: { "cards" => cards }
-    }
+    LingoKids::Card.class_variable_set :@@cards, cards
   end
 
   context "api response returns an empty list of cards" do
     let(:cards) { [] }
+
 
     it "returns an empty hash" do
       expect(LingoKids.run).to eq({})

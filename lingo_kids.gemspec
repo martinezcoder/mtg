@@ -9,7 +9,9 @@ Gem::Specification.new do |s|
   s.files       = ["lib/lingo_kids.rb",
                   "lib/lingo_kids/set.rb",
                   "lib/lingo_kids/api_client.rb",
-                  "lib/lingo_kids/retryable.rb"]
+                  "lib/lingo_kids/retryable.rb",
+                  "lib/lingo_kids/card.rb",
+                  "lib/lingo_kids/downloader.rb"]
   s.executables << 'lk_cards'
   s.homepage    = 'http://www.martinezcoder.com'
   s.license     = 'MIT'

@@ -1,4 +1,4 @@
-require 'lingo_kids/set'
+require 'spec_helper'
 
 describe LingoKids::Set do
   subject { described_class.new }
