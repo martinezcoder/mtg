@@ -1,4 +1,4 @@
-class LingoKids::Set
+class LingoKids::MtgSet
 
   attr_reader :set
 

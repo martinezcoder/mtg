@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Fran Martinez"]
   s.email       = 'martinezcoder@gmail.com'
   s.files       = ["lib/lingo_kids.rb",
-                  "lib/lingo_kids/set.rb",
+                  "lib/lingo_kids/mtg_set.rb",
                   "lib/lingo_kids/api_client.rb",
                   "lib/lingo_kids/retryable.rb",
                   "lib/lingo_kids/card.rb",

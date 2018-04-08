@@ -11,11 +11,8 @@ class LingoKids::ApiClient
 
   attr_reader :params
 
-  def initialize(params={})
+  def get(params={})
     @params = params
-  end
-
-  def get(params=nil)
     headers = response.to_hash
     body = JSON.parse(response.body)
     { headers: headers, body: body }

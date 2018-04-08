@@ -44,6 +44,7 @@ class LingoKids::Downloader
       if num_page == 1
         page = @first_page
       else
+        puts rss
         page = client.get(page: num_page)
       end
 
@@ -51,6 +52,11 @@ class LingoKids::Downloader
 
       num_page += 1
     end
+  end
+
+  def rss
+    # RAM used by the Ruby process
+    ["RSS", `ps -eo pid,rss | grep #{Process.pid} | awk '{print $2}'`.to_i].join(": ")
   end
 
   def last_page
@@ -68,6 +74,6 @@ class LingoKids::Downloader
   end
 
   def client
-    @client ||= LingoKids::ApiClient.new
+    LingoKids::ApiClient.new
   end
 end

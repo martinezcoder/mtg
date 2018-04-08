@@ -1,4 +1,12 @@
 #!/usr/bin/env ruby
 
+lib_dir = File.expand_path("#{__dir__}/../lib/")
+$LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
+
 require 'lingo_kids'
-puts LingoKids.run(ARGV[0])
+require 'pry'
+#res =  LingoKids.run #(ARGV[0])
+
+
+binding.pry
+puts "hola"

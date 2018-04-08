@@ -1,6 +1,6 @@
 class LingoKids
   def self.run
-    set = Set.new
+    set = MtgSet.new
 
     Card.each do |c|
       set.add(c["set"], c)
@@ -11,7 +11,7 @@ class LingoKids
 end
 
 require 'lingo_kids/retryable'
-require 'lingo_kids/set'
+require 'lingo_kids/mtg_set'
 require 'lingo_kids/api_client'
 require 'lingo_kids/card'
 require 'lingo_kids/downloader'

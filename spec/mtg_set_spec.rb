@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe LingoKids::Set do
+describe LingoKids::MtgSet do
   subject { described_class.new }
 
   describe "#add" do
