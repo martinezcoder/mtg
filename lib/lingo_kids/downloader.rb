@@ -34,7 +34,6 @@ class LingoKids::Downloader
   end
 
   def groups
-    @all = []
     @first_page = client.get
     num_page = 1
     total_pages = last_page
@@ -59,6 +58,10 @@ class LingoKids::Downloader
     ["RSS", `ps -eo pid,rss | grep #{Process.pid} | awk '{print $2}'`.to_i].join(": ")
   end
 
+  # Given a header containing a key-value like next:
+  # { "link" => ["<http://test?page=1>; rel=\"last\""] }
+  # returns the number of the last page (in this case, it would return 1)
+  #
   def last_page
     # NOTE: I could just increment a page param one by one, but given that the
     # header provides this value, I have considered better to use it. I cannot

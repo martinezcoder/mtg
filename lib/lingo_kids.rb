@@ -1,5 +1,5 @@
 class LingoKids
-  def self.run
+  def self.group_by_set
     set = MtgSet.new
 
     Card.each do |c|
@@ -7,6 +7,12 @@ class LingoKids
     end
 
     return set.set
+  end
+
+  def self.group_by_set_and_rarity
+    group_by_set.each_with_object({}) do |(group, value), result|
+      result[group] = value.group_by { |v| v["rarity"] }
+    end
   end
 end
 

@@ -5,7 +5,9 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 
 require 'lingo_kids'
 require 'pry'
-#res =  LingoKids.run #(ARGV[0])
+
+#res = LingoKids.group_by_set
+res = LingoKids.group_by_set_and_rarity
 
 
 binding.pry
