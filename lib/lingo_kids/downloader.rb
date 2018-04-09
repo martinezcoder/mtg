@@ -5,7 +5,7 @@ require 'lingo_kids'
 class LingoKids::Downloader
 
   def initialize(item_name)
-    @item_name = item_name # will be always "cards"
+    @item_name = item_name # in this test will be always "cards"
   end
 
   def all

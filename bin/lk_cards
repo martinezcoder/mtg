@@ -19,8 +19,13 @@ when "2"
   # Returns a list of cards from the Khans of Tarkir that ONLY have the colors red and blue
   res = LingoKids.ktk_cards
 else
-  puts "Please select an option"
+  puts "Please add a param number:"
+  puts "0. Returns a list of Cards grouped by Set."
+  puts "1. Returns a list of Cards grouped by Set and then by rarity."
+  puts "2. Returns a list of cards from the Khans of Tarkir that ONLY have the colors red and blue"
+  puts
+  puts "Example:"
+  puts "$ lk_cards 0"
 end
 
-binding.pry
-puts "hola"
+puts res
