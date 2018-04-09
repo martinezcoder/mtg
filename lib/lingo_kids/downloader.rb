@@ -62,30 +62,42 @@ class LingoKids::Downloader
     end
   end
 
+  def client
+    LingoKids::ApiClient.new
+  end
+
+  # NOTE: I could just increment a page param one by one, but given that the
+  # header provides this value, I have considered better to use it.
+  # I can assume that all the pages will include a list of present cards but
+  # I prefer to be defensive and ensure that we loop until the last page
+  class LastPageFinder
+    attr_reader :link
+
+    def initialize(link)
+      @link = link.first
+    end
+
+    # Given a header containing a key-value like next:
+    # { "link" => ["<http://test?page=5>; rel=\"last\", "<http://test?page=2>; rel=\"next\""] }
+    # returns the number of the last page (in this case, it would return 5)
+    def last_page_number
+      last_link_string.match(/\?page=(\d+)/)[1].to_i
+    end
+
+    private
+
+    def last_link_string
+      link.split(",").detect{ |l| l[/\; rel=\"last\"$/] }
+    end
+  end
+
+  def last_page
+    return 0 unless @first_page
+    @last_page ||= LastPageFinder.new(@first_page[:headers]["link"]).last_page_number
+  end
+
   def rss
     # RAM used by the Ruby process
     ["RSS", `ps -eo pid,rss | grep #{Process.pid} | awk '{print $2}'`.to_i].join(": ")
-  end
-
-  # Given a header containing a key-value like next:
-  # { "link" => ["<http://test?page=1>; rel=\"last\""] }
-  # returns the number of the last page (in this case, it would return 1)
-  #
-  def last_page
-    # NOTE: I could just increment a page param one by one, but given that the
-    # header provides this value, I have considered better to use it. I cannot
-    # assume that all the pages will include a list of present cards (maybe
-    # there is a page in the middle where cards=[]
-    # TODO: create a class for next two lines
-    @last_page ||=
-      begin
-        return 0 unless @first_page
-        link_last = @first_page[:headers]["link"].first.split(',').select { |link| link[/\; rel=\"last\"$/] }.first
-        link_last.split(';').first.gsub(/(<|>)/, '').split("page=").last.to_i
-      end
-  end
-
-  def client
-    LingoKids::ApiClient.new
   end
 end
