@@ -22,7 +22,7 @@ class LingoKids::ApiClient
 
   def response
     @response ||=
-      with_retries(3, RateLimitError, 5) do
+      with_retries({error: RateLimitError}) do
         uri = URI(API_URL)
         uri.query = URI.encode_www_form(params)
         res = Net::HTTP.get_response(uri)

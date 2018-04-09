@@ -1,17 +1,30 @@
 module LingoKids::Retryable
-  def with_retries(retries, error, seconds)
-    @retries = 0
+  # Given an error class,
+  # if that error occurs inside the block,
+  # it will sleep n seconds
+  # and retry the block n times
+  #
+
+  def with_retries(options={})
+    max_retries   = options[:retries] || default_retryable_options[:retries]
+    error         = options[:error]   || default_retryable_options[:error]
+    sleep_seconds = options[:seconds] || default_retryable_options[:seconds]
+
+    current_retry = options[:next_retry] || default_retryable_options[:next_retry]
     yield
   rescue error
-    puts "Rate Limit Exceeded. Retrying call in #{seconds} seconds"
-    if @retries >= retries
+    puts "Rate Limit Exceeded. Retrying call in #{sleep_seconds} seconds"
+    if current_retry >= max_retries
       raise "Retries Limit Exceeded. Raising..."
     else
-      with_retries(retries, error, seconds) do
-        @retries += 1
-        sleep seconds
+      with_retries(options.merge(next_retry: current_retry + 1)) do
+        sleep sleep_seconds
         yield
       end
     end
+  end
+
+  def default_retryable_options
+    {retries: 3, error: StandardError, seconds: 5, next_retry: 0}
   end
 end

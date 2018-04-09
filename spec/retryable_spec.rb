@@ -6,13 +6,15 @@ class RetryableTest
   class MyCustomError < StandardError; end
 
   def test1
-    with_retries(2, MyCustomError, 0) do
+    options = {retries: 2, error: MyCustomError, seconds: 0}
+    with_retries(options) do
       raise RuntimeError
     end
   end
 
   def test2
-    with_retries(2, MyCustomError, 0) do
+    options = {retries: 3, error: MyCustomError, seconds: 0}
+    with_retries(options) do
       raise MyCustomError
     end
   end
