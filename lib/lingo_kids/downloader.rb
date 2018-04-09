@@ -47,19 +47,31 @@ class LingoKids::Downloader
     puts params.merge({page: num_page}).merge(memory_usage: rss)
     total_pages = last_page
 
-    # TODO: use Thread to download all the pages
+    start_time = Time.now
+    puts params.merge({page: num_page})
+      .merge(total_pages: total_pages)
+      .merge(memory_usage: rss)
+      .merge(date: start_time)
+
     while num_page <= total_pages do
       if num_page == 1
         page = @first_page
       else
-        puts params.merge({page: num_page}).merge(memory_usage: rss)
         page = client.get(params.merge({page: num_page}))
       end
 
       yield page if block_given?
 
+      $stdout.flush
+      print "#{num_page}/#{total_pages}\r"
+
       num_page += 1
     end
+
+    puts params.merge({page: num_page - 1})
+      .merge(total_pages: total_pages)
+      .merge(memory_usage: rss)
+      .merge(date: Time.now)
   end
 
   def client
