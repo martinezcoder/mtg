@@ -53,14 +53,30 @@ class LingoKids::Downloader
       .merge(memory_usage: rss)
       .merge(date: start_time)
 
+    threads = []
+    @pages_loaded = 0
     while num_page <= total_pages do
-      if num_page == 1
-        page = @first_page
-      else
-        page = client.get(params.merge({page: num_page}))
+      if (num_page % 10 == 0 && num_page > 1)
+        statuses = threads.map(&:status)
+        while statuses.any?{ |t| t == "sleep" }
+          $stdout.flush
+          print "#{@pages_loaded}/#{total_pages}\r"
+          sleep 1
+          statuses = threads.map(&:status)
+        end
       end
 
-      yield page if block_given?
+      threads << Thread.new do
+        if num_page == 1
+          page = @first_page
+        else
+          page = client.get(params.merge({page: num_page}))
+        end
+
+        yield page if block_given?
+
+        @pages_loaded += 1
+      end
 
       $stdout.flush
       print "#{num_page}/#{total_pages}\r"
