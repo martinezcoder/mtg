@@ -1,4 +1,5 @@
 require 'lingo_kids'
+require 'thwait'
 
 # This class is scalable to be used for any other item
 #
@@ -55,16 +56,17 @@ class LingoKids::Downloader
 
     threads = []
     @pages_loaded = 0
+
     while num_page <= total_pages do
-      if (num_page % 10 == 0 && num_page > 1)
-        statuses = threads.map(&:status)
-        while statuses.any?{ |t| t == "sleep" }
-          $stdout.flush
-          print "#{@pages_loaded}/#{total_pages}\r"
-          sleep 1
-          statuses = threads.map(&:status)
-        end
-      end
+#      if (num_page % 150 == 0)
+#        statuses = threads.map(&:status)
+#        while statuses.any?{ |t| t == "sleep" }
+#          $stdout.flush
+#          print "#{@pages_loaded}/#{total_pages}\r"
+#          sleep 1
+#          statuses = threads.map(&:status)
+#        end
+#      end
 
       threads << Thread.new do
         if num_page == 1
@@ -78,11 +80,18 @@ class LingoKids::Downloader
         @pages_loaded += 1
       end
 
+      # NOTE: avoid too many simultaneous calls
+      # NOTE: removing this sleep, the results are not correct
+      sleep 0.05
+
       $stdout.flush
       print "#{num_page}/#{total_pages}\r"
 
       num_page += 1
     end
+
+    puts "Waiting threads..."
+    ThreadsWait.all_waits(*threads)
 
     puts params.merge({page: num_page - 1})
       .merge(total_pages: total_pages)

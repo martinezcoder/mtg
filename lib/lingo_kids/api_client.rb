@@ -8,6 +8,7 @@ class LingoKids::ApiClient
   UnknownError            = Class.new(StandardError)
   RateLimitError          = Class.new(StandardError)
   ServiceUnavailableError = Class.new(StandardError)
+  CustomTimeoutError      = Class.new(StandardError)
 
   API_URL = "https://api.magicthegathering.io/v1/cards"
 
@@ -56,7 +57,8 @@ class LingoKids::ApiClient
     {
       error: ServiceUnavailableError,
       error_message: "We are temporarily offline for maintenance.",
-      seconds: 10
+      seconds: 10,
+      retries: 5
     }
   end
 end
