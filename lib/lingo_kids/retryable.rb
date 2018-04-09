@@ -9,11 +9,12 @@ module LingoKids::Retryable
     max_retries   = options[:retries] || default_retryable_options[:retries]
     error         = options[:error]   || default_retryable_options[:error]
     sleep_seconds = options[:seconds] || default_retryable_options[:seconds]
+    msg           = options[:error_message] || ""
 
     current_retry = options[:next_retry] || default_retryable_options[:next_retry]
     yield
   rescue error
-    puts "Rate Limit Exceeded. Retrying call in #{sleep_seconds} seconds"
+    puts "#{msg}\n Retrying call in #{sleep_seconds} seconds"
     if current_retry >= max_retries
       raise "Retries Limit Exceeded. Raising..."
     else
