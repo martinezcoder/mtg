@@ -44,6 +44,7 @@ class LingoKids::Downloader
   def groups(params={})
     @first_page = client.get(params)
     num_page = 1
+    puts params.merge({page: num_page}).merge(memory_usage: rss)
     total_pages = last_page
 
     # TODO: use Thread to download all the pages
@@ -51,8 +52,7 @@ class LingoKids::Downloader
       if num_page == 1
         page = @first_page
       else
-        puts rss
-        puts params.merge({page: num_page})
+        puts params.merge({page: num_page}).merge(memory_usage: rss)
         page = client.get(params.merge({page: num_page}))
       end
 

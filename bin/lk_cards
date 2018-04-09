@@ -28,4 +28,5 @@ else
   puts "$ lk_cards 0"
 end
 
+binding.pry
 puts res
