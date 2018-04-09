@@ -16,7 +16,9 @@ class LingoKids
   end
 
   def self.ktk_cards
-    Card.where(setName: "Khans of Tarkir")
+    colors = ["Red", "Blue"]
+    cards = Card.where(setName: "Khans of Tarkir", colors: colors.join(","))
+    cards.select { |c| c["colors"].size == colors.size }
   end
 end
 

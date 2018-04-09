@@ -81,6 +81,7 @@ class LingoKids::Downloader
     # { "link" => ["<http://test?page=5>; rel=\"last\", "<http://test?page=2>; rel=\"next\""] }
     # returns the number of the last page (in this case, it would return 5)
     def last_page_number
+      return 1 if link == ""
       last_link_string.match(/\?page=(\d+)/)[1].to_i
     end
 
