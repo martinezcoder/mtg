@@ -7,7 +7,7 @@ describe LingoKids::Downloader do
     context "one page with cards" do
       before do
         allow_any_instance_of(LingoKids::ApiClient)
-          .to receive(:get).with(no_args)
+          .to receive(:get).with({})
           .and_return(response)
       end
 
@@ -30,7 +30,7 @@ describe LingoKids::Downloader do
     context "multiple pages with cards" do
       before do
         allow_any_instance_of(LingoKids::ApiClient)
-          .to receive(:get).with(no_args)
+          .to receive(:get).with({})
           .and_return(response1)
 
         allow_any_instance_of(LingoKids::ApiClient)

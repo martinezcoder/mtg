@@ -6,9 +6,21 @@ $LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
 require 'lingo_kids'
 require 'pry'
 
-#res = LingoKids.group_by_set
-res = LingoKids.group_by_set_and_rarity
+x = ARGV[0]
 
+case x
+when "0"
+  # Returns a list of Cards grouped by Set.
+  res = LingoKids.group_by_set
+when "1"
+  # Returns a list of Cards grouped by Set and then by rarity.
+  res = LingoKids.group_by_set_and_rarity
+when "2"
+  # Returns a list of cards from the Khans of Tarkir that ONLY have the colors red and blue
+  res = LingoKids.ktk_cards
+else
+  puts "Please select an option"
+end
 
 binding.pry
 puts "hola"

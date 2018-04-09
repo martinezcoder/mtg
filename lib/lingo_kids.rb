@@ -14,6 +14,10 @@ class LingoKids
       result[group] = value.group_by { |v| v["rarity"] }
     end
   end
+
+  def self.ktk_cards
+    Card.where(setName: "Khans of Tarkir")
+  end
 end
 
 require 'lingo_kids/retryable'

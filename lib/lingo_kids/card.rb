@@ -11,6 +11,10 @@ class LingoKids::Card
     LingoKids::Downloader.new("cards")
   end
 
+  def self.where(params)
+    downloader.where(params)
+  end
+
   def self.all
     @@cards ||= downloader.all
   end

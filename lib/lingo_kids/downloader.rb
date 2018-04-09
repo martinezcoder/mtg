@@ -22,10 +22,18 @@ class LingoKids::Downloader
     end
   end
 
+  def where(params)
+    items = []
+    each_group(params) do |item|
+      items << item
+    end
+    items
+  end
+
   private
 
-  def each_group
-    groups do |group|
+  def each_group(params={})
+    groups(params) do |group|
       items = group[:body][@item_name]
       items.each do |item|
         yield item
@@ -33,8 +41,8 @@ class LingoKids::Downloader
     end
   end
 
-  def groups
-    @first_page = client.get
+  def groups(params={})
+    @first_page = client.get(params)
     num_page = 1
     total_pages = last_page
 
@@ -44,7 +52,8 @@ class LingoKids::Downloader
         page = @first_page
       else
         puts rss
-        page = client.get(page: num_page)
+        puts params.merge({page: num_page})
+        page = client.get(params.merge({page: num_page}))
       end
 
       yield page if block_given?
