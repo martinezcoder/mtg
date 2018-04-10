@@ -21,6 +21,13 @@ $ bundle install
 $ lk_cards
 ```
 
+If you want to run with parallelism, take a look at the notes bellow (section
+ _Parallelising the retrieval of Cards to speed up things._)
+
+```
+$ git checkout parallel
+```
+
 To get the results of each exercise, run:
 
 - Returns a list of Cards grouped by Set.
@@ -76,6 +83,10 @@ I couldn't find a good explanation about these two last points. Sometimes, the
 returned amount of cards is less than the expected amount (221). It seems that
 with this waits it resolves the problem, but I would have to investigate why
 some cards are lost and no error is happenning...
+
+```
+git checkout parallel
+```
 
 ## Respecting the API's Rate Limiting facilities
 
