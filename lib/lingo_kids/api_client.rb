@@ -10,11 +10,12 @@ class LingoKids::ApiClient
   ServiceUnavailableError = Class.new(StandardError)
   CustomTimeoutError      = Class.new(StandardError)
 
-  API_URL = "https://api.magicthegathering.io/v1/cards"
+  API_URL = "https://api.magicthegathering.io/v1"
 
   attr_reader :params
 
-  def get(params={})
+  def get(item_name, params={})
+    @item_name = item_name
     @params = params
     headers = response.to_hash
     body = JSON.parse(response.body)
@@ -27,7 +28,7 @@ class LingoKids::ApiClient
     @response ||=
       with_retries(rate_limit_options) do
         with_retries(service_unavailable_options) do
-          uri = URI(API_URL)
+          uri = URI("#{API_URL}/#{@item_name}")
           uri.query = URI.encode_www_form(params)
           res = Net::HTTP.get_response(uri)
           case res.code

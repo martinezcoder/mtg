@@ -5,6 +5,8 @@ require 'thwait'
 #
 class LingoKids::Downloader
 
+  attr_reader :item_name
+
   def initialize(item_name)
     @item_name = item_name # in this test will be always "cards"
   end
@@ -43,7 +45,7 @@ class LingoKids::Downloader
   end
 
   def groups(params={})
-    @first_page = client.get(params)
+    @first_page = client.get(item_name, params)
     num_page = 1
     puts params.merge({page: num_page}).merge(memory_usage: rss)
     total_pages = last_page
@@ -58,21 +60,21 @@ class LingoKids::Downloader
     @pages_loaded = 0
 
     while num_page <= total_pages do
-#      if (num_page % 150 == 0)
-#        statuses = threads.map(&:status)
-#        while statuses.any?{ |t| t == "sleep" }
-#          $stdout.flush
-#          print "#{@pages_loaded}/#{total_pages}\r"
-#          sleep 1
-#          statuses = threads.map(&:status)
-#        end
-#      end
+
+      $stdout.flush
+      print "#{num_page}/#{total_pages}\r"
+
+      if (num_page % 50 == 0)
+        puts "\nWaiting 50 threads..."
+        ThreadsWait.all_waits(*threads)
+        threads = []
+      end
 
       threads << Thread.new do
         if num_page == 1
           page = @first_page
         else
-          page = client.get(params.merge({page: num_page}))
+          page = client.get(item_name, params.merge({page: num_page}))
         end
 
         yield page if block_given?
@@ -80,17 +82,15 @@ class LingoKids::Downloader
         @pages_loaded += 1
       end
 
-      # NOTE: avoid too many simultaneous calls
-      # NOTE: removing this sleep, the results are not correct
+      # NOTE: the sleep call avoids too many simultaneous calls
+      # Removing this sleep, too many communication failures happen
+      # although they are retried.
       sleep 0.05
-
-      $stdout.flush
-      print "#{num_page}/#{total_pages}\r"
 
       num_page += 1
     end
 
-    puts "Waiting threads..."
+    puts "\nWaiting last threads..."
     ThreadsWait.all_waits(*threads)
 
     puts params.merge({page: num_page - 1})

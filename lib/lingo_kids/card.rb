@@ -6,7 +6,6 @@ require 'lingo_kids'
 class LingoKids::Card
   @@cards = nil
 
-  # TODO: extract to initialized as `downloader :cards`
   def self.downloader
     LingoKids::Downloader.new("cards")
   end
