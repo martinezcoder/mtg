@@ -14,9 +14,10 @@ be done in 4 hours if I only focus on returning the expected data from the API.
 ### How to run
 
 This project has been made as a gem. You can build the gem and install it, or
-simple run under this folder:
+simply run under this folder:
 
 ```
+$ bundle install
 $ lk_cards
 ```
 

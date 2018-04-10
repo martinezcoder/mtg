@@ -47,16 +47,14 @@ class LingoKids::Downloader
   def groups(params={})
     @first_page = client.get(item_name, params)
     num_page = 1
-    puts params.merge({page: num_page}).merge(memory_usage: rss)
     total_pages = last_page
 
     start_time = Time.now
-    puts params.merge({page: num_page})
+    puts "Start: #{params.merge(page: num_page)
       .merge(total_pages: total_pages)
       .merge(memory_usage: rss)
-      .merge(date: start_time)
+      .merge(date: start_time)}"
 
-    threads = []
     @pages_loaded = 0
 
     while num_page <= total_pages do
@@ -64,39 +62,23 @@ class LingoKids::Downloader
       $stdout.flush
       print "#{num_page}/#{total_pages}\r"
 
-      if (num_page % 50 == 0)
-        puts "\nWaiting 50 threads..."
-        ThreadsWait.all_waits(*threads)
-        threads = []
+      if num_page == 1
+        page = @first_page
+      else
+        page = client.get(item_name, params.merge({page: num_page}))
       end
 
-      threads << Thread.new do
-        if num_page == 1
-          page = @first_page
-        else
-          page = client.get(item_name, params.merge({page: num_page}))
-        end
+      yield page if block_given?
 
-        yield page if block_given?
-
-        @pages_loaded += 1
-      end
-
-      # NOTE: the sleep call avoids too many simultaneous calls
-      # Removing this sleep, too many communication failures happen
-      # although they are retried.
-      sleep 0.05
+      @pages_loaded += 1
 
       num_page += 1
     end
 
-    puts "\nWaiting last threads..."
-    ThreadsWait.all_waits(*threads)
-
-    puts params.merge({page: num_page - 1})
+    puts "Finish: #{params.merge(page: num_page - 1)
       .merge(total_pages: total_pages)
       .merge(memory_usage: rss)
-      .merge(date: Time.now)
+      .merge(date: Time.now)}\n\n"
   end
 
   def client
