@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 class RetryableTest
-  include LingoKids::Retryable
+  include Mtg::Retryable
 
   class MyCustomError < StandardError; end
 
@@ -20,7 +20,7 @@ class RetryableTest
   end
 end
 
-describe LingoKids::Retryable do
+describe Mtg::Retryable do
   subject { RetryableTest.new }
 
   context "raising an unexpected error to retry" do

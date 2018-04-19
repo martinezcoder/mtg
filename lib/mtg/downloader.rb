@@ -1,9 +1,9 @@
-require 'lingo_kids'
+require 'mtg'
 require 'thwait'
 
 # This class is scalable to be used for any other item
 #
-class LingoKids::Downloader
+class Mtg::Downloader
 
   attr_reader :item_name
 
@@ -47,7 +47,6 @@ class LingoKids::Downloader
   def groups(params={})
     @first_page = client.get(item_name, params)
     num_page = 1
-    puts params.merge({page: num_page}).merge(memory_usage: rss)
     total_pages = last_page
 
     start_time = Time.now
@@ -59,18 +58,14 @@ class LingoKids::Downloader
     threads = []
     @pages_loaded = 0
 
+    Thread.abort_on_exception = true
+
     while num_page <= total_pages do
 
-      $stdout.flush
-      print "#{num_page}/#{total_pages}\r"
-
-      if (num_page % 50 == 0)
-        puts "\nWaiting 50 threads..."
-        ThreadsWait.all_waits(*threads)
-        threads = []
-      end
+      $stdout.flush; print "\r#{num_page}/#{total_pages}"
 
       threads << Thread.new do
+
         if num_page == 1
           page = @first_page
         else
@@ -82,9 +77,6 @@ class LingoKids::Downloader
         @pages_loaded += 1
       end
 
-      # NOTE: the sleep call avoids too many simultaneous calls
-      # Removing this sleep, too many communication failures happen
-      # although they are retried.
       sleep 0.05
 
       num_page += 1
@@ -100,7 +92,7 @@ class LingoKids::Downloader
   end
 
   def client
-    LingoKids::ApiClient.new
+    Mtg::ApiClient.new
   end
 
   # NOTE: I could just increment a page param one by one, but given that the

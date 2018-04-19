@@ -1,4 +1,4 @@
-class LingoKids
+class Mtg
   def self.group_by_set
     set = MtgSet.new
 
@@ -22,8 +22,8 @@ class LingoKids
   end
 end
 
-require 'lingo_kids/retryable'
-require 'lingo_kids/mtg_set'
-require 'lingo_kids/api_client'
-require 'lingo_kids/card'
-require 'lingo_kids/downloader'
+require 'mtg/retryable'
+require 'mtg/mtg_set'
+require 'mtg/api_client'
+require 'mtg/card'
+require 'mtg/downloader'

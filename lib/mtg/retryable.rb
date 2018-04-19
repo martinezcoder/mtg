@@ -1,4 +1,4 @@
-module LingoKids::Retryable
+module Mtg::Retryable
   # Given an error class,
   # if that error occurs inside the block,
   # it will sleep n seconds
@@ -6,12 +6,14 @@ module LingoKids::Retryable
   #
 
   def with_retries(options={})
-    max_retries   = options[:retries] || default_retryable_options[:retries]
-    error         = options[:error]   || default_retryable_options[:error]
-    sleep_seconds = options[:seconds] || default_retryable_options[:seconds]
-    msg           = options[:error_message] || ""
+    options = default_retryable_options.update(options)
 
-    current_retry = options[:next_retry] || default_retryable_options[:next_retry]
+    max_retries   = options[:retries]
+    error         = options[:error]
+    sleep_seconds = options[:seconds]
+    msg           = options[:error_message]
+    current_retry = options[:next_retry]
+
     yield
   rescue error
     puts "#{msg}\n Retrying call in #{sleep_seconds} seconds"

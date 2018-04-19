@@ -1,9 +1,9 @@
 require 'net/http'
 require 'json'
-require 'lingo_kids/retryable'
+require 'mtg/retryable'
 
-class LingoKids::ApiClient
-  include LingoKids::Retryable
+class Mtg::ApiClient
+  include Mtg::Retryable
 
   UnknownError            = Class.new(StandardError)
   RateLimitError          = Class.new(StandardError)
@@ -36,6 +36,8 @@ class LingoKids::ApiClient
             raise RateLimitError
           when "503"
             raise ServiceUnavailableError
+          when "520"
+            raise ServiceUnavailableError
           when "200"
             res
           else
@@ -59,7 +61,7 @@ class LingoKids::ApiClient
       error: ServiceUnavailableError,
       error_message: "We are temporarily offline for maintenance.",
       seconds: 10,
-      retries: 5
+      retries: 10
     }
   end
 end

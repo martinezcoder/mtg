@@ -1,17 +1,17 @@
 Gem::Specification.new do |s|
-  s.name        = 'lingo_kids'
+  s.name        = 'mtg'
   s.version     = '0.0.0'
   s.date        = '2018-04-06'
   s.summary     = "Test code for LingoKids"
   s.description = "A simple hello world gem"
   s.authors     = ["Fran Martinez"]
   s.email       = 'martinezcoder@gmail.com'
-  s.files       = ["lib/lingo_kids.rb",
-                  "lib/lingo_kids/mtg_set.rb",
-                  "lib/lingo_kids/api_client.rb",
-                  "lib/lingo_kids/retryable.rb",
-                  "lib/lingo_kids/card.rb",
-                  "lib/lingo_kids/downloader.rb"]
+  s.files       = ["lib/mtg.rb",
+                  "lib/mtg/mtg_set.rb",
+                  "lib/mtg/api_client.rb",
+                  "lib/mtg/retryable.rb",
+                  "lib/mtg/card.rb",
+                  "lib/mtg/downloader.rb"]
   s.executables << 'lk_cards'
   s.homepage    = 'http://www.martinezcoder.com'
   s.license     = 'MIT'

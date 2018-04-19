@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lingo_kids (0.0.0)
+    mtg (0.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -36,10 +36,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.14)
-  lingo_kids!
+  mtg!
   pry-byebug
   rake (~> 10.0)
   rspec (~> 3.0)
 
 BUNDLED WITH
-   1.14.6
+   1.16.1

@@ -1,5 +1,5 @@
 require 'rspec'
-require 'lingo_kids'
+require 'mtg'
 require 'pry'
 
 RSpec.configure do |config|
