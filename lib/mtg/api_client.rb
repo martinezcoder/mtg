@@ -59,7 +59,7 @@ class Mtg::ApiClient
   def service_unavailable_options
     {
       error: ServiceUnavailableError,
-      error_message: "We are temporarily offline for maintenance.",
+#      error_message: "We are temporarily offline for maintenance.",
       seconds: 10,
       retries: 10
     }

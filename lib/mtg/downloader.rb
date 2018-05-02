@@ -46,49 +46,29 @@ class Mtg::Downloader
 
   def groups(params={})
     @first_page = client.get(item_name, params)
-    num_page = 1
     total_pages = last_page
 
-    start_time = Time.now
-    puts params.merge({page: num_page})
-      .merge(total_pages: total_pages)
-      .merge(memory_usage: rss)
-      .merge(date: start_time)
-
-    threads = []
-    @pages_loaded = 0
+    puts params.merge(memory_usage: rss).merge(date: Time.now)
 
     Thread.abort_on_exception = true
-
-    while num_page <= total_pages do
-
-      $stdout.flush; print "\r#{num_page}/#{total_pages}"
-
-      threads << Thread.new do
-
-        if num_page == 1
-          page = @first_page
-        else
-          page = client.get(item_name, params.merge({page: num_page}))
-        end
-
-        yield page if block_given?
-
-        @pages_loaded += 1
-      end
-
+    threads = [ Thread.new { @first_page } ]
+    threads += (2..total_pages).map do |num_page|
       sleep 0.05
+      Thread.new { client.get(item_name, params.merge({page: num_page})) }
+    end
 
+    puts "\nWaiting threads..."
+    num_page = 1
+    ThreadsWait.all_waits(*threads) do
+      $stdout.flush; print "\r#{num_page}/#{total_pages}"
       num_page += 1
     end
 
-    puts "\nWaiting last threads..."
-    ThreadsWait.all_waits(*threads)
+    threads.each do |thread|
+      yield thread.value
+    end
 
-    puts params.merge({page: num_page - 1})
-      .merge(total_pages: total_pages)
-      .merge(memory_usage: rss)
-      .merge(date: Time.now)
+    puts params.merge(memory_usage: rss).merge(date: Time.now)
   end
 
   def client

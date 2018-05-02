@@ -16,7 +16,7 @@ module Mtg::Retryable
 
     yield
   rescue error
-    puts "#{msg}\n Retrying call in #{sleep_seconds} seconds"
+#    puts "#{msg}\n Retrying call in #{sleep_seconds} seconds"
     if current_retry >= max_retries
       raise "Retries Limit Exceeded. Raising..."
     else
